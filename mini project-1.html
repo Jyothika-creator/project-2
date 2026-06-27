@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Appointment Booking System</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f2f6ff;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        background: #2d6cdf;
+        color: white;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 600px;
+        margin: 20px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    }
+
+    input, select, button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        background: #2d6cdf;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    button:hover {
+        background: #1b4fb3;
+    }
+
+    .appointment {
+        background: #e9f0ff;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .delete {
+        background: red;
+        padding: 5px 10px;
+        border: none;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .search-box {
+        margin-top: 15px;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>📅 Online Appointment Booking System</h1>
+</header>
+
+<div class="container">
+
+    <h3>📝 Book Appointment</h3>
+
+    <input type="text" id="name" placeholder="👤 Enter your name">
+
+    <select id="service">
+        <option value="">🔽 Select Service</option>
+        <option>🩺 Doctor Consultation</option>
+        <option>💇 Salon Service</option>
+        <option>🏠 Home Cleaning</option>
+        <option>🚗 Car Service</option>
+    </select>
+
+    <input type="date" id="date">
+    <input type="time" id="time">
+
+    <button onclick="bookAppointment()">➕ Book Appointment</button>
+
+    <!-- SEARCH -->
+    <div class="search-box">
+        <input type="text" id="search" placeholder="🔍 Search by name or service..." onkeyup="filterAppointments()">
+    </div>
+
+    <h3>📌 Booked Appointments</h3>
+    <div id="list"></div>
+
+</div>
+
+<script>
+    function bookAppointment() {
+        let name = document.getElementById("name").value;
+        let service = document.getElementById("service").value;
+        let date = document.getElementById("date").value;
+        let time = document.getElementById("time").value;
+
+        if (!name || !service || !date || !time) {
+            alert("⚠️ Please fill all fields");
+            return;
+        }
+
+        let div = document.createElement("div");
+        div.className = "appointment";
+
+        div.innerHTML = `
+            <div class="info">
+                <b class="name">👤 ${name}</b><br>
+                <span class="service">🏷️ ${service}</span><br>
+                📅 ${date} ⏰ ${time}
+            </div>
+            <button class="delete" onclick="this.parentElement.remove()">❌</button>
+        `;
+
+        document.getElementById("list").appendChild(div);
+
+        document.getElementById("name").value = "";
+        document.getElementById("service").value = "";
+        document.getElementById("date").value = "";
+        document.getElementById("time").value = "";
+    }
+
+    function filterAppointments() {
+        let search = document.getElementById("search").value.toLowerCase();
+        let appointments = document.querySelectorAll(".appointment");
+
+        appointments.forEach(app => {
+            let name = app.querySelector(".name").innerText.toLowerCase();
+            let service = app.querySelector(".service").innerText.toLowerCase();
+
+            if (name.includes(search) || service.includes(search)) {
+                app.style.display = "flex";
+            } else {
+                app.style.display = "none";
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
